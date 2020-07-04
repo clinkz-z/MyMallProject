@@ -2,9 +2,9 @@ package com.zzz.project1.service;
 
 import com.zzz.project1.model.Admin;
 
-import com.zzz.project1.model.bo.AdminChangePwdBO;
+import com.zzz.project1.model.bo.AdminAddBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
-import com.zzz.project1.model.bo.AdminUpdataInfoBO;
+import com.zzz.project1.model.bo.AdminSearchBO;
 
 import java.util.List;
 
@@ -15,9 +15,11 @@ public interface AdminService {
 
     boolean deleteAdmins(String id);
 
-    Admin changePwd(AdminChangePwdBO changePwdBO);
+    int addAdminInfo(AdminAddBO updataInfoBO);
 
-    int addAdminInfo(AdminUpdataInfoBO updataInfoBO);
+    int updataAdminInfo(AdminAddBO updataInfoBO, String updataId);
 
-    int updataAdminInfo(AdminUpdataInfoBO updataInfoBO);
+    Admin getAdminsInfo(String id);
+
+    List<Admin> getSearchAdmins(AdminSearchBO searchBO);
 }

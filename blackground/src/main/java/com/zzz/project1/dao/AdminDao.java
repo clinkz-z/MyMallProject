@@ -11,9 +11,11 @@ public interface AdminDao {
 
     boolean deleteAdmins(String id);
 
-    Admin changePwd(Admin admin);
-
     int addAdminss(Admin admin);
 
-    int updataAdminss(Admin admin);
+    int updataAdminss(Admin updataAdmin, String updataId);
+
+    Admin getAdminsInfo(Admin admin);
+
+    List<Admin> getSearchAdmins(Admin admin);
 }

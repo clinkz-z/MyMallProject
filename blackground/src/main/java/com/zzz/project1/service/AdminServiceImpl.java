@@ -3,9 +3,9 @@ package com.zzz.project1.service;
 import com.zzz.project1.dao.AdminDao;
 import com.zzz.project1.dao.AdminDaoImpl;
 import com.zzz.project1.model.Admin;
-import com.zzz.project1.model.bo.AdminChangePwdBO;
+import com.zzz.project1.model.bo.AdminAddBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
-import com.zzz.project1.model.bo.AdminUpdataInfoBO;
+import com.zzz.project1.model.bo.AdminSearchBO;
 
 import java.util.List;
 
@@ -33,19 +33,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin changePwd(AdminChangePwdBO changePwdBO) {
-        Admin admin = new Admin();
-        admin.setNickname(changePwdBO.getAdminToken());
-        admin.setPwd(changePwdBO.getOldPwd());
-        if(adminDao.login(admin) != null){
-
-        }
-        adminDao.changePwd(admin);
-        return null;
-    }
-
-    @Override
-    public int addAdminInfo(AdminUpdataInfoBO updataInfoBO) {
+    public int addAdminInfo(AdminAddBO updataInfoBO) {
         Admin admin = new Admin();
         admin.setNickname(updataInfoBO.getNickname());
         admin.setPwd(updataInfoBO.getPwd());
@@ -55,12 +43,26 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int updataAdminInfo(AdminUpdataInfoBO updataInfoBO) {
+    public int updataAdminInfo(AdminAddBO updataInfoBO, String updataId) {
+        Admin updataAdmin = new Admin();
+        updataAdmin.setNickname(updataInfoBO.getNickname());
+        updataAdmin.setPwd(updataInfoBO.getPwd());
+        updataAdmin.setEmail(updataInfoBO.getEmail());
+        return adminDao.updataAdminss(updataAdmin,updataId);
+    }
+
+    @Override
+    public Admin getAdminsInfo(String id) {
         Admin admin = new Admin();
-        admin.setNickname(updataInfoBO.getNickname());
-        admin.setPwd(updataInfoBO.getPwd());
-        admin.setEmail(updataInfoBO.getEmail());
-        admin.setId(updataInfoBO.getId());
-        return adminDao.updataAdminss(admin);
+        admin.setId(Integer.parseInt(id));
+        return adminDao.getAdminsInfo(admin);
+    }
+
+    @Override
+    public List<Admin> getSearchAdmins(AdminSearchBO searchBO) {
+        Admin admin = new Admin();
+        admin.setEmail(searchBO.getEmail());
+        admin.setNickname(searchBO.getNickname());
+        return adminDao.getSearchAdmins(admin);
     }
 }

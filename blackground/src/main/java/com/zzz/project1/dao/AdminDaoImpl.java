@@ -1,5 +1,6 @@
 package com.zzz.project1.dao;
 
+import com.alibaba.druid.util.StringUtils;
 import com.zzz.project1.model.Admin;
 import com.zzz.project1.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -7,7 +8,10 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminDaoImpl implements AdminDao {
 
@@ -51,11 +55,6 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public Admin changePwd(Admin admin) {
-        return null;
-    }
-
-    @Override
     public int addAdminss(Admin admin) {
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
         Admin query = null;
@@ -78,19 +77,77 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public int updataAdminss(Admin admin) {
+    public int updataAdminss(Admin updataAdmin, String updataId) {
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        Admin query = null;
         int info = 0;
         try {
+            query = runner.query("select * from admin where email = ?",
+                    new BeanHandler<>(Admin.class),
+                    updataAdmin.getEmail());
+            if (query != null) {
+                return info;
+            }
+
             info = runner.execute("update admin set email = ?,nickname = ?,pwd = ? where id = ?",
-                    admin.getEmail(),
-                    admin.getNickname(),
-                    admin.getPwd(),
-                    admin.getId());
+                    updataAdmin.getEmail(),
+                    updataAdmin.getNickname(),
+                    updataAdmin.getPwd(),
+                    updataId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return info;
+    }
+
+    @Override
+    public Admin getAdminsInfo(Admin admin) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        Admin query = null;
+        try {
+            query = runner.query("select * from admin where id = ?",
+                    new BeanHandler<>(Admin.class),
+                    admin.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
+    }
+
+    @Override
+    public List<Admin> getSearchAdmins(Admin admin) {
+        Map<String,Object> result = getDynamicSql(admin);
+        String sql = (String) result.get("sql");
+        List<String> params = (List<String>) result.get("params");
+
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        List<Admin> admins = null;
+        try {
+            admins = runner.query(sql,new BeanListHandler<>(Admin.class),
+                    params.toArray());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return admins;
+    }
+
+    private Map<String,Object> getDynamicSql(Admin admin) {
+        String base = "select * from admin where 1 = 1";
+        List<String> params = new ArrayList<>();
+        if (!StringUtils.isEmpty(admin.getEmail())){
+            base = base + " and email like ?";
+            params.add("%" + admin.getEmail() + "%");
+        }
+        if (!StringUtils.isEmpty(admin.getNickname())){
+            base = base + " and nickname like ?";
+            params.add("%" + admin.getNickname() + "%");
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("sql", base);
+        map.put("params", params);
+
+        return map;
     }
 
 }
