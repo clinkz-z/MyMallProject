@@ -13,10 +13,10 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public Admin login(Admin admin) {
-        QueryRunner runnner = new QueryRunner(DruidUtils.getDataSource());
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
         Admin query = null;
         try {
-            query = runnner.query("select * from admin where email = ? and pwd = ?",
+            query = runner.query("select * from admin where email = ? and pwd = ?",
                     new BeanHandler<>(Admin.class),
                     admin.getEmail(),
                     admin.getPwd());
@@ -53,6 +53,44 @@ public class AdminDaoImpl implements AdminDao {
     @Override
     public Admin changePwd(Admin admin) {
         return null;
+    }
+
+    @Override
+    public int addAdminss(Admin admin) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        Admin query = null;
+        int info = 0;
+        try {
+            query = runner.query("select * from admin where email = ?",
+                    new BeanHandler<>(Admin.class),
+                    admin.getEmail());
+            if (query != null) {
+                return info;
+            }
+            info = runner.execute("insert into admin (email,nickname,pwd) values (?,?,?)",
+                    admin.getEmail(),
+                    admin.getNickname(),
+                    admin.getPwd());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return info;
+    }
+
+    @Override
+    public int updataAdminss(Admin admin) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        int info = 0;
+        try {
+            info = runner.execute("update admin set email = ?,nickname = ?,pwd = ? where id = ?",
+                    admin.getEmail(),
+                    admin.getNickname(),
+                    admin.getPwd(),
+                    admin.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return info;
     }
 
 }

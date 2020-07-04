@@ -5,6 +5,7 @@ import com.zzz.project1.model.Admin;
 import com.zzz.project1.model.Result;
 import com.zzz.project1.model.bo.AdminChangePwdBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
+import com.zzz.project1.model.bo.AdminUpdataInfoBO;
 import com.zzz.project1.model.vo.AdminLoginVO;
 import com.zzz.project1.service.AdminService;
 import com.zzz.project1.service.AdminServiceImpl;
@@ -31,14 +32,55 @@ public class AdminServlet extends HttpServlet {
         if ("login".equals(action)){
             login(request,response);
         }
+        if ("addAdminss".equals(action)){
+            addAdminss(request,response);
+        }
         if ("changePwd".equals(action)){
             changePwd(request,response);
+        }
+        if ("updateAdminss".equals(action)) {
+            updateAdminss(request,response);
         }
 
     }
 
     /**
-     * 修改密码
+     * 修改admin用户信息
+     * @param request
+     * @param response
+     */
+    private void updateAdminss(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requstBody = HttpUtils.getRequstBody(request);
+        AdminUpdataInfoBO updataInfoBO = gson.fromJson(requstBody, AdminUpdataInfoBO.class);
+
+        int updateInfo = adminService.updataAdminInfo(updataInfoBO);
+        if (updateInfo > 0) {
+            response.getWriter().println(gson.toJson(Result.ok("修改成功")));
+        } else {
+            response.getWriter().println(gson.toJson(Result.error("修改失败")));
+        }
+    }
+
+    /**
+     * 增加用户
+     * @param request
+     * @param response
+     */
+    private void addAdminss(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requstBody = HttpUtils.getRequstBody(request);
+        AdminUpdataInfoBO updataInfoBO = gson.fromJson(requstBody, AdminUpdataInfoBO.class);
+        System.out.println(updataInfoBO);
+
+        int updateInfo = adminService.addAdminInfo(updataInfoBO);
+        if (updateInfo > 0) {
+            response.getWriter().println(gson.toJson(Result.ok("添加admin用户成功")));
+        } else {
+            response.getWriter().println(gson.toJson(Result.error("用户名已经存在")));
+        }
+    }
+
+    /**
+     * 修改密码  还未实现
      * @param request
      * @param response
      */
@@ -85,7 +127,9 @@ public class AdminServlet extends HttpServlet {
         if ("deleteAdmins".equals(action)) {
             deleteAdmins(request,response);
         }
+
     }
+
 
     /**
      * 删除所选admin账号的信息
@@ -94,9 +138,8 @@ public class AdminServlet extends HttpServlet {
      */
     private void deleteAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id = request.getParameter("id");
-
         boolean delete = adminService.deleteAdmins(id);
-        response.getWriter().println(gson.toJson(Result.ok("删除成功")));
+        response.getWriter().println(gson.toJson(Result.ok(delete)));
     }
 
     /**
@@ -108,9 +151,6 @@ public class AdminServlet extends HttpServlet {
      */
     private void allAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Admin> adminList = adminService.allAdmins();
-        Result result = new Result();
-        result.setCode(0);
-        result.setData(adminList);
-        response.getWriter().println(gson.toJson(result));
+        response.getWriter().println(gson.toJson(Result.ok(adminList)));
     }
 }

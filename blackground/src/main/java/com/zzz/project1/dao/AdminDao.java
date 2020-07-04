@@ -12,4 +12,8 @@ public interface AdminDao {
     boolean deleteAdmins(String id);
 
     Admin changePwd(Admin admin);
+
+    int addAdminss(Admin admin);
+
+    int updataAdminss(Admin admin);
 }

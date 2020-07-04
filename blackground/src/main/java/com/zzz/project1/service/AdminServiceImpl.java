@@ -5,6 +5,7 @@ import com.zzz.project1.dao.AdminDaoImpl;
 import com.zzz.project1.model.Admin;
 import com.zzz.project1.model.bo.AdminChangePwdBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
+import com.zzz.project1.model.bo.AdminUpdataInfoBO;
 
 import java.util.List;
 
@@ -41,5 +42,25 @@ public class AdminServiceImpl implements AdminService {
         }
         adminDao.changePwd(admin);
         return null;
+    }
+
+    @Override
+    public int addAdminInfo(AdminUpdataInfoBO updataInfoBO) {
+        Admin admin = new Admin();
+        admin.setNickname(updataInfoBO.getNickname());
+        admin.setPwd(updataInfoBO.getPwd());
+        admin.setEmail(updataInfoBO.getEmail());
+
+        return adminDao.addAdminss(admin);
+    }
+
+    @Override
+    public int updataAdminInfo(AdminUpdataInfoBO updataInfoBO) {
+        Admin admin = new Admin();
+        admin.setNickname(updataInfoBO.getNickname());
+        admin.setPwd(updataInfoBO.getPwd());
+        admin.setEmail(updataInfoBO.getEmail());
+        admin.setId(updataInfoBO.getId());
+        return adminDao.updataAdminss(admin);
     }
 }

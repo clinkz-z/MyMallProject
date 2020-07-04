@@ -4,6 +4,7 @@ import com.zzz.project1.model.Admin;
 
 import com.zzz.project1.model.bo.AdminChangePwdBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
+import com.zzz.project1.model.bo.AdminUpdataInfoBO;
 
 import java.util.List;
 
@@ -15,4 +16,8 @@ public interface AdminService {
     boolean deleteAdmins(String id);
 
     Admin changePwd(AdminChangePwdBO changePwdBO);
+
+    int addAdminInfo(AdminUpdataInfoBO updataInfoBO);
+
+    int updataAdminInfo(AdminUpdataInfoBO updataInfoBO);
 }
