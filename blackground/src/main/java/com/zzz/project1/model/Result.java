@@ -57,7 +57,7 @@ public class Result {
         return new Result(0,data);
     }
 
-    public static Result ok(String message){
+    public static Result okMsg(String message){
         return new Result(0,message);
     }
 

@@ -1,6 +1,6 @@
 package com.zzz.project1.model.vo;
 
-public class GetAdminsInfoVO {
+public class AdminsGetInfoVO {
 
     private String email;
 

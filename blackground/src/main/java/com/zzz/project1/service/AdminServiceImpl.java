@@ -4,6 +4,7 @@ import com.zzz.project1.dao.AdminDao;
 import com.zzz.project1.dao.AdminDaoImpl;
 import com.zzz.project1.model.Admin;
 import com.zzz.project1.model.bo.AdminAddBO;
+import com.zzz.project1.model.bo.AdminChangePwdBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
 import com.zzz.project1.model.bo.AdminSearchBO;
 
@@ -64,5 +65,15 @@ public class AdminServiceImpl implements AdminService {
         admin.setEmail(searchBO.getEmail());
         admin.setNickname(searchBO.getNickname());
         return adminDao.getSearchAdmins(admin);
+    }
+
+    @Override
+    public boolean changePwd(AdminChangePwdBO changePwdBO) {
+        Admin admin = new Admin();
+        admin.setNickname(changePwdBO.getAdminToken());
+        admin.setPwd(changePwdBO.getOldPwd());
+        Admin confirmAdmin = adminDao.confirmAdmin(admin);
+        confirmAdmin.setPwd(changePwdBO.getNewPwd());
+        return adminDao.changePwd(confirmAdmin);
     }
 }

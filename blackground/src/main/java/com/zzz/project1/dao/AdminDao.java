@@ -18,4 +18,8 @@ public interface AdminDao {
     Admin getAdminsInfo(Admin admin);
 
     List<Admin> getSearchAdmins(Admin admin);
+
+    Admin confirmAdmin(Admin admin);
+
+    boolean changePwd(Admin admin);
 }

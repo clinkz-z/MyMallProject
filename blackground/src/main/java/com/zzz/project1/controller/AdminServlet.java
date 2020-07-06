@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.zzz.project1.model.Admin;
 import com.zzz.project1.model.Result;
 import com.zzz.project1.model.bo.AdminAddBO;
+import com.zzz.project1.model.bo.AdminChangePwdBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
 import com.zzz.project1.model.bo.AdminSearchBO;
 import com.zzz.project1.model.vo.AdminLoginVO;
-import com.zzz.project1.model.vo.GetAdminsInfoVO;
+import com.zzz.project1.model.vo.AdminsGetInfoVO;
 import com.zzz.project1.service.AdminService;
 import com.zzz.project1.service.AdminServiceImpl;
 import com.zzz.project1.utils.HttpUtils;
@@ -24,8 +25,8 @@ import java.util.List;
 public class AdminServlet extends HttpServlet {
 
     private AdminService adminService = new AdminServiceImpl();
-    Gson gson = new Gson();
-    String updataId = null;
+    private Gson gson = new Gson();
+    private String updataId = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -43,7 +44,24 @@ public class AdminServlet extends HttpServlet {
         if ("getSearchAdmins".equals(action)) {
             getSearchAdmins(request,response);
         }
+        if ("changePwd".equals(action)) {
+            changePwd(request,response);
+        }
 
+    }
+
+    private void changePwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requstBody = HttpUtils.getRequstBody(request);
+        AdminChangePwdBO changePwdBO = gson.fromJson(requstBody, AdminChangePwdBO.class);
+
+        String newPwd = changePwdBO.getNewPwd();
+        String confirmPwd = changePwdBO.getConfirmPwd();
+        if ( ! newPwd.equals(confirmPwd)){
+            response.getWriter().println(gson.toJson(Result.error("两次密码不一致，请重新输入")));
+            return;
+        }
+        boolean changePwd = adminService.changePwd(changePwdBO);
+        response.getWriter().println(gson.toJson(Result.ok(changePwd)));
     }
 
     /**
@@ -70,7 +88,7 @@ public class AdminServlet extends HttpServlet {
 
         int updateInfo = adminService.updataAdminInfo(updataInfoBO,updataId);
         if (updateInfo > 0) {
-            response.getWriter().println(gson.toJson(Result.ok("修改成功")));
+            response.getWriter().println(gson.toJson(Result.okMsg("修改成功")));
         } else {
             response.getWriter().println(gson.toJson(Result.error("修改失败,email重复")));
         }
@@ -88,7 +106,7 @@ public class AdminServlet extends HttpServlet {
 
         int addAdminBO = adminService.addAdminInfo(AdminAddBO);
         if (addAdminBO > 0) {
-            response.getWriter().println(gson.toJson(Result.ok("添加admin用户成功")));
+            response.getWriter().println(gson.toJson(Result.okMsg("添加admin用户成功")));
         } else {
             response.getWriter().println(gson.toJson(Result.error("用户名已经存在")));
         }
@@ -143,7 +161,7 @@ public class AdminServlet extends HttpServlet {
         Admin getAdmin = adminService.getAdminsInfo(updataId);
 
         if (getAdmin != null) {
-            GetAdminsInfoVO getAdminsInfoVO = new GetAdminsInfoVO();
+            AdminsGetInfoVO getAdminsInfoVO = new AdminsGetInfoVO();
             getAdminsInfoVO.setEmail(getAdmin.getEmail());
             getAdminsInfoVO.setNickname(getAdmin.getNickname());
             getAdminsInfoVO.setPwd(getAdmin.getPwd());

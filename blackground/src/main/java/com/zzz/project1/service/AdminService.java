@@ -3,6 +3,7 @@ package com.zzz.project1.service;
 import com.zzz.project1.model.Admin;
 
 import com.zzz.project1.model.bo.AdminAddBO;
+import com.zzz.project1.model.bo.AdminChangePwdBO;
 import com.zzz.project1.model.bo.AdminLoginBO;
 import com.zzz.project1.model.bo.AdminSearchBO;
 
@@ -22,4 +23,6 @@ public interface AdminService {
     Admin getAdminsInfo(String id);
 
     List<Admin> getSearchAdmins(AdminSearchBO searchBO);
+
+    boolean changePwd(AdminChangePwdBO changePwdBO);
 }

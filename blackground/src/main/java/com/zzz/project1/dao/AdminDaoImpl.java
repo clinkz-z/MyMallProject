@@ -115,6 +115,7 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Admin> getSearchAdmins(Admin admin) {
         Map<String,Object> result = getDynamicSql(admin);
         String sql = (String) result.get("sql");
@@ -130,6 +131,35 @@ public class AdminDaoImpl implements AdminDao {
         }
 
         return admins;
+    }
+
+    @Override
+    public Admin confirmAdmin(Admin admin) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        Admin query = null;
+        try {
+            query = runner.query("select * from admin where nickname = ? and pwd = ?",
+                    new BeanHandler<>(Admin.class),
+                    admin.getNickname(),
+                    admin.getPwd());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
+    }
+
+    @Override
+    public boolean changePwd(Admin admin) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        int info = 0;
+        try {
+            info = runner.update("update admin set pwd = ? where id = ?",
+                    admin.getPwd(),
+                    admin.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return info != 0;
     }
 
     private Map<String,Object> getDynamicSql(Admin admin) {
