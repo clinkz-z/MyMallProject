@@ -5,9 +5,7 @@ import com.zzz.project1.dao.GoodsDaoImpl;
 import com.zzz.project1.model.Goods;
 import com.zzz.project1.model.Spec;
 import com.zzz.project1.model.Type;
-import com.zzz.project1.model.bo.GoodsAddBO;
-import com.zzz.project1.model.bo.GoodsAddTypeBO;
-import com.zzz.project1.model.bo.SpecBO;
+import com.zzz.project1.model.bo.*;
 import com.zzz.project1.model.vo.GoodsTypeVO;
 
 import java.util.ArrayList;
@@ -36,25 +34,9 @@ public class GoodsServiceImpl implements GoodsService{
     }
 
     @Override
-    public void addGoods(GoodsAddBO goodsAddBo) {
-        List<SpecBO> specList = goodsAddBo.getSpecList();
-        double price = specList.get(0).getUnitPrice();
-        int stockNum = specList.get(0).getStockNum();
-        for (int i = 1; i < specList.size(); i++) {
-            if (price > specList.get(i).getUnitPrice()){
-                price = specList.get(i).getUnitPrice();
-            }
-            if (stockNum < specList.get(i).getStockNum()){
-                stockNum = specList.get(i).getStockNum();
-            }
-        }
-        Goods goods = new Goods(null,
-                goodsAddBo.getName(),
-                goodsAddBo.getImg(),
-                price,
-                goodsAddBo.getTypeId(),
-                stockNum,
-                goodsAddBo.getDesc());
+    public void addGoods(GoodsUpdataBO updataBO) {
+        List<SpecBO> specList = updataBO.getSpecList();
+        Goods goods = getGoods(updataBO);
         goodsDao.addGoods(goods);
         int id = goodsDao.lastInsertId();
         List<Spec> specs = new ArrayList<>();
@@ -68,5 +50,53 @@ public class GoodsServiceImpl implements GoodsService{
     @Override
     public Map<String, Object> getGoodsInfo(String id) {
         return goodsDao.getGoodsInfo(id);
+    }
+
+    @Override
+    public boolean addSpec(GoodsAddSpecBO addSpecBO) {
+        Spec spec = new Spec(null,addSpecBO.getSpecName(),addSpecBO.getStockNum(),addSpecBO.getUnitPrice(),addSpecBO.getGoodsId());
+        if ( goodsDao.checkSpec(spec) ) {
+            return false;
+        }
+        return goodsDao.addSpecs(spec);
+    }
+
+    @Override
+    public void deleteSpec(GoodsDeleteSpecBO deleteSpecBO) {
+        goodsDao.deleteSpec(deleteSpecBO);
+    }
+
+    @Override
+    public void updataGoods(GoodsUpdataBO updataBO) {
+        Goods goods = getGoods(updataBO);
+        goodsDao.updataGoods(goods);
+        goodsDao.updataSpecs(updataBO);
+    }
+
+    @Override
+    public void deleteGoods(String id) {
+        goodsDao.deleteGoods(id);
+        goodsDao.deleteSpecByGoodsId(id);
+    }
+
+    private Goods getGoods(GoodsUpdataBO updataBO) {
+        List<SpecBO> specList = updataBO.getSpecList();
+        double price = specList.get(0).getUnitPrice();
+        int stockNum = specList.get(0).getStockNum();
+        for (int i = 1; i < specList.size(); i++) {
+            if (price > specList.get(i).getUnitPrice()){
+                price = specList.get(i).getUnitPrice();
+            }
+            if (stockNum < specList.get(i).getStockNum()){
+                stockNum = specList.get(i).getStockNum();
+            }
+        }
+        return new Goods(updataBO.getId(),
+                updataBO.getName(),
+                updataBO.getImg(),
+                price,
+                updataBO.getTypeId(),
+                stockNum,
+                updataBO.getDesc());
     }
 }

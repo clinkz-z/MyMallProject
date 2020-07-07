@@ -1,8 +1,7 @@
 package com.zzz.project1.service;
 
 import com.zzz.project1.model.Type;
-import com.zzz.project1.model.bo.GoodsAddBO;
-import com.zzz.project1.model.bo.GoodsAddTypeBO;
+import com.zzz.project1.model.bo.*;
 import com.zzz.project1.model.vo.GoodsTypeVO;
 
 import java.util.List;
@@ -15,7 +14,15 @@ public interface GoodsService {
 
     List<GoodsTypeVO> goodsByType(String typeId);
 
-    void addGoods(GoodsAddBO goodsAddBo);
+    void addGoods(GoodsUpdataBO updataBO);
 
     Map<String, Object> getGoodsInfo(String id);
+
+    boolean addSpec(GoodsAddSpecBO addSpecBO);
+
+    void deleteSpec(GoodsDeleteSpecBO deleteSpecBO);
+
+    void updataGoods(GoodsUpdataBO updataBO);
+
+    void deleteGoods(String id);
 }

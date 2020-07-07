@@ -8,6 +8,16 @@ public class SpecBO {
 
     private Double unitPrice;
 
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getSpecName() {
         return specName;
     }

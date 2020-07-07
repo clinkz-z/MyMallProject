@@ -10,7 +10,7 @@ public class Goods {
 
     private Double price;
 
-    private Integer tpyeId;
+    private Integer typeId;
 
     private Integer stockNum;
 
@@ -48,12 +48,12 @@ public class Goods {
         this.price = price;
     }
 
-    public Integer getTpyeId() {
-        return tpyeId;
+    public Integer getTypeId() {
+        return typeId;
     }
 
-    public void setTpyeId(Integer tpyeId) {
-        this.tpyeId = tpyeId;
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
     public Integer getStockNum() {
@@ -80,7 +80,7 @@ public class Goods {
         this.name = name;
         this.img = img;
         this.price = price;
-        this.tpyeId = tpyeId;
+        this.typeId = tpyeId;
         this.stockNum = stockNum;
         this.desc = desc;
     }
@@ -92,7 +92,7 @@ public class Goods {
                 ", name='" + name + '\'' +
                 ", img='" + img + '\'' +
                 ", price=" + price +
-                ", tpyeId=" + tpyeId +
+                ", typeId=" + typeId +
                 ", stockNum=" + stockNum +
                 ", desc='" + desc + '\'' +
                 '}';

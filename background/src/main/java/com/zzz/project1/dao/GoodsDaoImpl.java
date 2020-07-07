@@ -3,6 +3,9 @@ package com.zzz.project1.dao;
 import com.zzz.project1.model.Goods;
 import com.zzz.project1.model.Spec;
 import com.zzz.project1.model.Type;
+import com.zzz.project1.model.bo.GoodsDeleteSpecBO;
+import com.zzz.project1.model.bo.GoodsUpdataBO;
+import com.zzz.project1.model.bo.SpecBO;
 import com.zzz.project1.model.vo.GoodsGetInfoVO;
 import com.zzz.project1.model.vo.GoodsTypeVO;
 import com.zzz.project1.model.vo.SpecVO;
@@ -88,7 +91,7 @@ public class GoodsDaoImpl implements GoodsDao {
                     goods.getName(),
                     goods.getImg(),
                     goods.getPrice(),
-                    goods.getTpyeId(),
+                    goods.getTypeId(),
                     goods.getStockNum(),
                     goods.getDesc());
         } catch (SQLException e) {
@@ -126,6 +129,36 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
+    public boolean addSpecs(Spec spec) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("insert into spec values (null,?,?,?,?)",
+                    spec.getSpecName(),
+                    spec.getStockNum(),
+                    spec.getUnitPrice(),
+                    spec.getGoodsId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkSpec(Spec spec) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        Spec query = null;
+        try {
+            query = runner.query("select * from spec where goodsId = ? and specName = ?",
+                    new BeanHandler<>(Spec.class),
+                    spec.getGoodsId(),
+                    spec.getSpecName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query != null;// query 不为空，返回true，说明存在同名得spec
+    }
+
+    @Override
     public Map<String, Object> getGoodsInfo(String id) {
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
 
@@ -145,5 +178,73 @@ public class GoodsDaoImpl implements GoodsDao {
             e.printStackTrace();
         }
         return map;
+    }
+
+    @Override
+    public void deleteSpec(GoodsDeleteSpecBO deleteSpecBO) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("delete from spec where goodsId= ? and specName = ?",
+                    deleteSpecBO.getGoodsId(),
+                    deleteSpecBO.getSpecName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updataGoods(Goods goods) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("update goods set name = ?, img = ?, price = ?, typeId = ?, stockNum = ?, `desc` = ? where id = ?",
+                    goods.getName(),
+                    goods.getImg(),
+                    goods.getPrice(),
+                    goods.getTypeId(),
+                    goods.getStockNum(),
+                    goods.getDesc(),
+                    goods.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updataSpecs(GoodsUpdataBO updataBO) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        for (int i = 0; i < updataBO.getSpecList().size(); i++) {
+            SpecBO specBO = updataBO.getSpecList().get(i);
+            try {
+                runner.update("update spec set specName = ?, stockNum = ?, unitPrice = ? where id = ?",
+                        specBO.getSpecName(),
+                        specBO.getStockNum(),
+                        specBO.getUnitPrice(),
+                        specBO.getId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void deleteGoods(String id) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("delete from goods where id like '%?%' ",
+                    Integer.parseInt(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteSpecByGoodsId(String id) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("delete from spec where goodsId = ?",
+                    Integer.parseInt(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
