@@ -2,7 +2,7 @@ package com.zzz.project1.model;
 
 import java.sql.Date;
 
-public class orders {
+public class Orders {
 
     private Integer id;
 

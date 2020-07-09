@@ -7,6 +7,9 @@ import com.zzz.project1.model.Spec;
 import com.zzz.project1.model.Type;
 import com.zzz.project1.model.bo.*;
 import com.zzz.project1.model.vo.GoodsTypeVO;
+import com.zzz.project1.model.vo.MsgNoReplyVO;
+import com.zzz.project1.model.vo.MsgReplyVO;
+import com.zzz.project1.model.vo.SearchGoodsVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +80,26 @@ public class GoodsServiceImpl implements GoodsService{
     public void deleteGoods(String id) {
         goodsDao.deleteGoods(id);
         goodsDao.deleteSpecByGoodsId(id);
+    }
+
+    @Override
+    public List<MsgReplyVO> repliedMsg() {
+        return goodsDao.repliedMsg();
+    }
+
+    @Override
+    public List<MsgNoReplyVO> noReplyMsg() {
+        return goodsDao.noReplyMsg();
+    }
+
+    @Override
+    public void reply(ReplyBO replyBO) {
+        goodsDao.reply(replyBO);
+    }
+
+    @Override
+    public List<SearchGoodsVO> searchGoods(String keyword) {
+        return goodsDao.searchGoods(keyword);
     }
 
     private Goods getGoods(GoodsUpdataBO updataBO) {

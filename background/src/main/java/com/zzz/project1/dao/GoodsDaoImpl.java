@@ -5,10 +5,9 @@ import com.zzz.project1.model.Spec;
 import com.zzz.project1.model.Type;
 import com.zzz.project1.model.bo.GoodsDeleteSpecBO;
 import com.zzz.project1.model.bo.GoodsUpdataBO;
+import com.zzz.project1.model.bo.ReplyBO;
 import com.zzz.project1.model.bo.SpecBO;
-import com.zzz.project1.model.vo.GoodsGetInfoVO;
-import com.zzz.project1.model.vo.GoodsTypeVO;
-import com.zzz.project1.model.vo.SpecVO;
+import com.zzz.project1.model.vo.*;
 import com.zzz.project1.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -67,9 +66,18 @@ public class GoodsDaoImpl implements GoodsDao {
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
         List<GoodsTypeVO> query = null;
         try {
-            query = runner.query("select id,img,name,price,typeid,stocknum from goods where typeid = ?",
-                    new BeanListHandler<>(GoodsTypeVO.class),
-                    typeId);
+            if ("-1".equals(typeId)) {
+                query = runner.query("select id,img,name,price,typeid,stocknum from goods",
+                        new BeanListHandler<>(GoodsTypeVO.class));
+            }  else {
+                query = runner.query("select id,img,name,price,typeid,stocknum from goods where typeid = ?",
+                        new BeanListHandler<>(GoodsTypeVO.class),
+                        typeId);
+            }
+//            else if("undefined".equals(typeId)) {
+//                query = runner.query("select id,img,name,price,typeid,stocknum from goods where typeid = 1",
+//                        new BeanListHandler<>(GoodsTypeVO.class));
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -163,7 +171,7 @@ public class GoodsDaoImpl implements GoodsDao {
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
 
         Map<String, Object> map = new HashMap<>();
-        GoodsGetInfoVO getInfoVO = null;
+        GoodsGetInfoVO getInfoVO = new GoodsGetInfoVO();
         List<SpecVO> specVOList = new ArrayList<>();
         try {
             getInfoVO = runner.query("select * from goods where id = ?",
@@ -246,5 +254,59 @@ public class GoodsDaoImpl implements GoodsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<MsgReplyVO> repliedMsg() {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        List<MsgReplyVO> query = null;
+        try {
+            query = runner.query("select * from msg where state = 0",
+                    new BeanListHandler<>(MsgReplyVO.class));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
+    }
+
+    @Override
+    public List<MsgNoReplyVO> noReplyMsg() {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        List<MsgNoReplyVO> query = null;
+        try {
+            query = runner.query("select * from msg where state = 1",
+                    new BeanListHandler<>(MsgNoReplyVO.class));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
+    }
+
+    @Override
+    public int reply(ReplyBO replyBO) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        int update = 0;
+        try {
+            update = runner.update("update msg set state = 0, replyContent = ? where id = ?",
+                    replyBO.getContent(),
+                    replyBO.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
+
+    @Override
+    public List<SearchGoodsVO> searchGoods(String keyword) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        List<SearchGoodsVO> query = null;
+        try {
+            query = runner.query("select id, img, name, price, typeId from goods where name like ?",
+                    new BeanListHandler<>(SearchGoodsVO.class),
+                    "%" + keyword + "%");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
     }
 }

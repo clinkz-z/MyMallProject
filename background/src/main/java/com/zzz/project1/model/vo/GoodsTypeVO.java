@@ -13,7 +13,7 @@ public class GoodsTypeVO {
 
     private Double price;
 
-    private Integer tpyeId;
+    private Integer typeId;
 
     private Integer stockNum;
 
@@ -49,12 +49,12 @@ public class GoodsTypeVO {
         this.price = price;
     }
 
-    public Integer getTpyeId() {
-        return tpyeId;
+    public Integer getTypeId() {
+        return typeId;
     }
 
-    public void setTpyeId(Integer tpyeId) {
-        this.tpyeId = tpyeId;
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
     public Integer getStockNum() {

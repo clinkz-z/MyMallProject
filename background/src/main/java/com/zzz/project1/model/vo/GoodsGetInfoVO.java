@@ -13,7 +13,7 @@ public class GoodsGetInfoVO {
 
     private Integer typeId;
 
-    private List<SpecBO> specList;
+    private List<SpecVO> specs;
 
     public String getName() {
         return name;
@@ -47,11 +47,11 @@ public class GoodsGetInfoVO {
         this.typeId = typeId;
     }
 
-    public List<SpecBO> getSpecList() {
-        return specList;
+    public List<SpecVO> getSpecs() {
+        return specs;
     }
 
-    public void setSpecList(List<SpecBO> specList) {
-        this.specList = specList;
+    public void setSpecs(List<SpecVO> specs) {
+        this.specs = specs;
     }
 }
