@@ -309,4 +309,11 @@ public class GoodsDaoImpl implements GoodsDao {
         }
         return query;
     }
+
+    @Override
+    public List<CommentsVO> getGoodsComment(int goodsId) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+
+        return null;
+    }
 }

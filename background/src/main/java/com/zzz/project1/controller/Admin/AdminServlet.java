@@ -51,7 +51,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     private void changePwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         AdminChangePwdBO changePwdBO = gson.fromJson(requstBody, AdminChangePwdBO.class);
 
         String newPwd = changePwdBO.getNewPwd();
@@ -70,7 +70,7 @@ public class AdminServlet extends HttpServlet {
      * @param response
      */
     private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         AdminSearchBO searchBO = gson.fromJson(requstBody, AdminSearchBO.class);
 
         List<Admin> admins = adminService.getSearchAdmins(searchBO);
@@ -83,7 +83,7 @@ public class AdminServlet extends HttpServlet {
      * @param response
      */
     private void updateAdminss(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         AdminAddBO updataInfoBO = gson.fromJson(requstBody, AdminAddBO.class);
 
         int updateInfo = adminService.updataAdminInfo(updataInfoBO,updataId);
@@ -100,7 +100,7 @@ public class AdminServlet extends HttpServlet {
      * @param response
      */
     private void addAdminss(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         AdminAddBO AdminAddBO = gson.fromJson(requstBody, AdminAddBO.class);
         System.out.println(AdminAddBO);
 
@@ -120,7 +120,7 @@ public class AdminServlet extends HttpServlet {
      */
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         AdminLoginBO loginBO = gson.fromJson(requstBody, AdminLoginBO.class);
         System.out.println(loginBO);
 

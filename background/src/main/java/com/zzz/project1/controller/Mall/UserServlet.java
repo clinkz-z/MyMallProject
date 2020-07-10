@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void updateUserData(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         UserUpdateDataBO userUpdateDataBO = gson.fromJson(requstBody, UserUpdateDataBO.class);
         int code = userService.updataUserData(userUpdateDataBO);
         if (code != 0) {
@@ -56,7 +56,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void updatePwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         UserUpdatePwdBO userUpdatePwdBO = gson.fromJson(requstBody,UserUpdatePwdBO.class);
         String newPwd = userUpdatePwdBO.getNewPwd();
         String confirmPwd = userUpdatePwdBO.getConfirmPwd();
@@ -69,7 +69,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         UserLoginBO userLoginBO = gson.fromJson(requstBody, UserLoginBO.class);
         UserLoginVO loginVO = userService.login(userLoginBO);
         if (loginVO != null) {
@@ -82,7 +82,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void signup(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         SignupBO signupBO = gson.fromJson(requstBody, SignupBO.class);
         int code = userService.signup(signupBO);
         if (code != 0) {

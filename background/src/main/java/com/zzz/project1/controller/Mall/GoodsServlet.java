@@ -2,10 +2,7 @@ package com.zzz.project1.controller.Mall;
 
 import com.google.gson.Gson;
 import com.zzz.project1.model.Result;
-import com.zzz.project1.model.vo.GoodsGetInfoVO;
-import com.zzz.project1.model.vo.GoodsTypeVO;
-import com.zzz.project1.model.vo.SearchGoodsVO;
-import com.zzz.project1.model.vo.SpecVO;
+import com.zzz.project1.model.vo.*;
 import com.zzz.project1.service.GoodsService;
 import com.zzz.project1.service.GoodsServiceImpl;
 
@@ -40,10 +37,16 @@ public class GoodsServlet extends HttpServlet {
         if ("searchGoods".equals(action)) {
             searchGoods(request,response);
         }
-//        if ("getGoodsComment".equals(action)) {
-//            getGoodsComment(request,response);
-//        }
+        if ("getGoodsComment".equals(action)) {
+            getGoodsComment(request,response);
+        }
 
+    }
+
+    private void getGoodsComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int goodsId = Integer.parseInt(request.getParameter("goodsId"));
+        List<CommentsVO> list = goodsService.getGoodsComment(goodsId);
+        response.getWriter().println(gson.toJson(Result.ok(list)));
     }
 
     private void searchGoods(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -2,7 +2,10 @@ package com.zzz.project1.dao;
 
 import com.alibaba.druid.util.StringUtils;
 import com.zzz.project1.model.Orders;
+import com.zzz.project1.model.bo.CommentsBO;
+import com.zzz.project1.model.bo.OrderAddBO;
 import com.zzz.project1.model.bo.PageOrderBO;
+import com.zzz.project1.model.bo.SettleAccountBO;
 import com.zzz.project1.model.vo.*;
 import com.zzz.project1.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -11,7 +14,9 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,6 +189,69 @@ public class OrderDaoImpl implements OrderDao {
             e.printStackTrace();
         }
         return query;
+    }
+
+    @Override
+    public void settleAccounts(SettleAccountBO order) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("update orders set stateId = 1, num = ?, amount = ?, updateTime = ? where id = ?",
+                    order.getGoodsNum(),
+                    order.getAmount(),
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())),
+                    order.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void pay(int id) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("update orders set stateId = 1, updateTime = ? where id = ?",
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())),
+                    id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void confirmReceive(int id) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("update orders set stateId = 3, updateTime = ? where id = ?",
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())),
+                    id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendComment(CommentsBO commentsBO) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update("insert into comment values (null,?,?,?,?,?,?,?)",
+                    commentsBO.getContent(),
+                    commentsBO.getOrderId(),
+                    commentsBO.getGoodsId(),
+                    commentsBO.getGoodsDetailId(),
+                    commentsBO.getToken(),
+                    commentsBO.getScore(),
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+            runner.update("update orders set hasComment = 1 where id = ?",
+                    commentsBO.getOrderId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addOrder(OrderAddBO orderAddBO) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+//        runner.update("insert into orders values ()");
     }
 
 

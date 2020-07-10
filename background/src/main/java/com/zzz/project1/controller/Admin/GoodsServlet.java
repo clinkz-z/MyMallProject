@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.zzz.project1.model.Result;
 import com.zzz.project1.model.Type;
 import com.zzz.project1.model.bo.*;
-import com.zzz.project1.model.vo.GoodsGetInfoVO;
 import com.zzz.project1.model.vo.GoodsTypeVO;
 import com.zzz.project1.model.vo.MsgNoReplyVO;
 import com.zzz.project1.model.vo.MsgReplyVO;
@@ -55,14 +54,14 @@ public class GoodsServlet extends HttpServlet {
     }
 
     private void reply(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requstBody = HttpUtils.getRequstBody(request);
+        String requstBody = HttpUtils.getRequestBody(request);
         ReplyBO replyBO = gson.fromJson(requstBody, ReplyBO.class);
         goodsService.reply(replyBO);
         response.getWriter().println(gson.toJson(Result.ok()));
     }
 
     private void updateGoods(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         GoodsUpdataBO updataBO = gson.fromJson(requestBody, GoodsUpdataBO.class);
 
         goodsService.updataGoods(updataBO);
@@ -70,14 +69,14 @@ public class GoodsServlet extends HttpServlet {
     }
 
     private void deleteSpec(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         GoodsDeleteSpecBO deleteSpecBO = gson.fromJson(requestBody, GoodsDeleteSpecBO.class);
         goodsService.deleteSpec(deleteSpecBO);
         response.getWriter().println(gson.toJson(Result.ok()));
     }
 
     private void addSpec(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         GoodsAddSpecBO addSpecBO = gson.fromJson(requestBody, GoodsAddSpecBO.class);
         boolean addSpec =  goodsService.addSpec(addSpecBO);
         if (addSpec) {
@@ -89,7 +88,7 @@ public class GoodsServlet extends HttpServlet {
     }
 
     private void addGoods(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         GoodsUpdataBO updataBO = gson.fromJson(requestBody, GoodsUpdataBO.class);
 
         goodsService.addGoods(updataBO);
@@ -116,7 +115,7 @@ public class GoodsServlet extends HttpServlet {
     }
 
     private void addType(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         GoodsAddTypeBO addTypeBO = gson.fromJson(requestBody, GoodsAddTypeBO.class);
 
         Boolean addType = goodsService.addType(addTypeBO);

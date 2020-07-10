@@ -6,10 +6,7 @@ import com.zzz.project1.model.Type;
 import com.zzz.project1.model.bo.GoodsDeleteSpecBO;
 import com.zzz.project1.model.bo.GoodsUpdataBO;
 import com.zzz.project1.model.bo.ReplyBO;
-import com.zzz.project1.model.vo.GoodsTypeVO;
-import com.zzz.project1.model.vo.MsgNoReplyVO;
-import com.zzz.project1.model.vo.MsgReplyVO;
-import com.zzz.project1.model.vo.SearchGoodsVO;
+import com.zzz.project1.model.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -52,4 +49,7 @@ public interface GoodsDao {
     int reply(ReplyBO replyBO);
 
     List<SearchGoodsVO> searchGoods(String keyword);
+
+    List<CommentsVO> getGoodsComment(int goodsId);
+
 }

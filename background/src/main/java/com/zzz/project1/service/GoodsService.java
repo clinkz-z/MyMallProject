@@ -2,10 +2,7 @@ package com.zzz.project1.service;
 
 import com.zzz.project1.model.Type;
 import com.zzz.project1.model.bo.*;
-import com.zzz.project1.model.vo.GoodsTypeVO;
-import com.zzz.project1.model.vo.MsgNoReplyVO;
-import com.zzz.project1.model.vo.MsgReplyVO;
-import com.zzz.project1.model.vo.SearchGoodsVO;
+import com.zzz.project1.model.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -36,4 +33,6 @@ public interface GoodsService {
     void reply(ReplyBO replyBO);
 
     List<SearchGoodsVO> searchGoods(String keyword);
+
+    List<CommentsVO> getGoodsComment(int goodsId);
 }

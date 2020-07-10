@@ -1,8 +1,7 @@
 package com.zzz.project1.service;
 
 
-import com.zzz.project1.model.bo.OrderChangeBO;
-import com.zzz.project1.model.bo.PageOrderBO;
+import com.zzz.project1.model.bo.*;
 import com.zzz.project1.model.vo.GetOrderByStateVO;
 import com.zzz.project1.model.vo.OrderByIdVO;
 import com.zzz.project1.model.vo.PageOrdersVO;
@@ -20,4 +19,14 @@ public interface OrderService {
     void deleteOrder(String id);
 
     List<GetOrderByStateVO> getOrderByState(Integer state, String token);
+
+    void settleAccounts(List<SettleAccountBO> list);
+
+    void pay(int id);
+
+    void confirmReceive(int id);
+
+    void sendComment(CommentsBO commentsBO);
+
+    void addOrder(OrderAddBO orderAddBO);
 }

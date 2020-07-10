@@ -3,8 +3,7 @@ package com.zzz.project1.service;
 import com.zzz.project1.dao.OrderDao;
 import com.zzz.project1.dao.OrderDaoImpl;
 import com.zzz.project1.model.Orders;
-import com.zzz.project1.model.bo.OrderChangeBO;
-import com.zzz.project1.model.bo.PageOrderBO;
+import com.zzz.project1.model.bo.*;
 import com.zzz.project1.model.vo.*;
 
 import java.util.List;
@@ -73,6 +72,34 @@ public class OrderServiceImpl implements OrderService {
             goods.setSpec(orderDao.getSpec(goodsId, goods.getGoodsDetailId()).getSpecName());
         }
         return getOrderList;
+    }
+
+    @Override
+    public void settleAccounts(List<SettleAccountBO> list) {
+        for (SettleAccountBO order : list) {
+            orderDao.settleAccounts(order);
+        }
+    }
+
+    @Override
+    public void pay(int id) {
+        orderDao.pay(id);
+    }
+
+    @Override
+    public void confirmReceive(int id) {
+        orderDao.confirmReceive(id);
+    }
+
+    @Override
+    public void sendComment(CommentsBO commentsBO) {
+        orderDao.sendComment(commentsBO);
+    }
+
+    @Override
+    public void addOrder(OrderAddBO orderAddBO) {
+
+        orderDao.addOrder(orderAddBO);
     }
 
 }

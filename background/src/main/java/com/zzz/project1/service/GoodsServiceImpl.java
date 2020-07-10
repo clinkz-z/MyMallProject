@@ -6,10 +6,7 @@ import com.zzz.project1.model.Goods;
 import com.zzz.project1.model.Spec;
 import com.zzz.project1.model.Type;
 import com.zzz.project1.model.bo.*;
-import com.zzz.project1.model.vo.GoodsTypeVO;
-import com.zzz.project1.model.vo.MsgNoReplyVO;
-import com.zzz.project1.model.vo.MsgReplyVO;
-import com.zzz.project1.model.vo.SearchGoodsVO;
+import com.zzz.project1.model.vo.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +97,11 @@ public class GoodsServiceImpl implements GoodsService{
     @Override
     public List<SearchGoodsVO> searchGoods(String keyword) {
         return goodsDao.searchGoods(keyword);
+    }
+
+    @Override
+    public List<CommentsVO> getGoodsComment(int goodsId) {
+        return goodsDao.getGoodsComment(goodsId);
     }
 
     private Goods getGoods(GoodsUpdataBO updataBO) {

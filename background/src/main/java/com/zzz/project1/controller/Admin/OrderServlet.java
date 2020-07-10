@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/api/admin/order/*")
 public class OrderServlet extends HttpServlet {
@@ -36,7 +35,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void changeOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         OrderChangeBO orderChangeBO = gson.fromJson(requestBody, OrderChangeBO.class);
         orderService.changeOrder(orderChangeBO);
         response.getWriter().println(gson.toJson(Result.ok()));
@@ -44,7 +43,7 @@ public class OrderServlet extends HttpServlet {
 
     private void ordersByPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //校验前端参数
-        String requestBody = HttpUtils.getRequstBody(request);
+        String requestBody = HttpUtils.getRequestBody(request);
         PageOrderBO orderBO = gson.fromJson(requestBody, PageOrderBO.class);
         PageOrdersVO orders = orderService.ordersByPage(orderBO);
         response.getWriter().println(gson.toJson(Result.ok(orders)));

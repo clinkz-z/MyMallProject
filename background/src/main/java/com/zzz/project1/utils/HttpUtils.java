@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class HttpUtils {
 
-    public static String getRequstBody(HttpServletRequest request) throws IOException {
+    public static String getRequestBody(HttpServletRequest request) throws IOException {
         ServletInputStream inputStream = request.getInputStream();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] bytes = new byte[1024];
@@ -15,8 +15,6 @@ public class HttpUtils {
         while ((length = inputStream.read(bytes)) != -1) {
             outputStream.write(bytes,0,length);
         }
-        String requstBody = outputStream.toString("utf-8");
-
-        return requstBody;
+        return outputStream.toString("utf-8");
     }
 }
